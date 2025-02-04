@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaan.materials.mapper.TemporaryMapper">
+
+    <resultMap type="Temporary" id="TemporaryResult">
+        <result property="temporaryId"    column="temporary_id"    />
+        <result property="temporaryName"    column="temporary_name"    />
+        <result property="temporaryNum"    column="temporary_num"    />
+        <result property="temporaryPrice"    column="temporary_price"    />
+        <result property="unit"    column="unit"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="materialsClassifyId"    column="materials_classify_id"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditPerson"    column="audit_person"    />
+        <result property="approverOpinion"    column="approver_opinion"    />
+        <result property="approverTime"    column="approver_time"    />
+        <result property="approverPerson"    column="approver_person"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTemporaryVo">
+        select temporary_id, temporary_name, temporary_num, temporary_price, unit, supplier_id, materials_classify_id, audit_status, audit_opinion, audit_time, audit_person, approver_opinion, approver_time, approver_person, remark, create_by, create_time, update_by, update_time from lp_temporary
+    </sql>
+
+    <select id="selectTemporaryList" parameterType="Temporary" resultMap="TemporaryResult">
+        <include refid="selectTemporaryVo"/>
+        <where>
+            <if test="temporaryName != null  and temporaryName != ''"> and temporary_name like concat('%', #{temporaryName}, '%')</if>
+            <if test="temporaryNum != null "> and temporary_num = #{temporaryNum}</if>
+            <if test="temporaryPrice != null "> and temporary_price = #{temporaryPrice}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="materialsClassifyId != null "> and materials_classify_id = #{materialsClassifyId}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditOpinion != null  and auditOpinion != ''"> and audit_opinion = #{auditOpinion}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="auditPerson != null  and auditPerson != ''"> and audit_person = #{auditPerson}</if>
+            <if test="approverOpinion != null  and approverOpinion != ''"> and approver_opinion = #{approverOpinion}</if>
+            <if test="approverTime != null "> and approver_time = #{approverTime}</if>
+            <if test="approverPerson != null  and approverPerson != ''"> and approver_person = #{approverPerson}</if>
+        </where>
+    </select>
+
+    <select id="selectTemporaryBylpTemporaryId" parameterType="Integer" resultMap="TemporaryResult">
+        <include refid="selectTemporaryVo"/>
+        where temporary_id = #{temporaryId}
+    </select>
+
+    <insert id="insertTemporary" parameterType="Temporary" useGeneratedKeys="true" keyProperty="lpTemporaryId">
+        insert into lp_temporary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="temporaryName != null and temporaryName != ''">temporary_name,</if>
+            <if test="temporaryNum != null">temporary_num,</if>
+            <if test="temporaryPrice != null">temporary_price,</if>
+            <if test="unit != null">unit,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="materialsClassifyId != null">materials_classify_id,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditPerson != null">audit_person,</if>
+            <if test="approverOpinion != null">approver_opinion,</if>
+            <if test="approverTime != null">approver_time,</if>
+            <if test="approverPerson != null">approver_person,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="temporaryName != null and temporaryName != ''">#{temporaryName},</if>
+            <if test="temporaryNum != null">#{temporaryNum},</if>
+            <if test="temporaryPrice != null">#{temporaryPrice},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="materialsClassifyId != null">#{materialsClassifyId},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditPerson != null">#{auditPerson},</if>
+            <if test="approverOpinion != null">#{approverOpinion},</if>
+            <if test="approverTime != null">#{approverTime},</if>
+            <if test="approverPerson != null">#{approverPerson},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTemporary" parameterType="Temporary">
+        update lp_temporary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="temporaryName != null and temporaryName != ''">temporary_name = #{temporaryName},</if>
+            <if test="temporaryNum != null">temporary_num = #{temporaryNum},</if>
+            <if test="temporaryPrice != null">temporary_price = #{temporaryPrice},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="materialsClassifyId != null">materials_classify_id = #{materialsClassifyId},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditPerson != null">audit_person = #{auditPerson},</if>
+            <if test="approverOpinion != null">approver_opinion = #{approverOpinion},</if>
+            <if test="approverTime != null">approver_time = #{approverTime},</if>
+            <if test="approverPerson != null">approver_person = #{approverPerson},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where  temporary_id = #{temporaryId}
+    </update>
+
+    <delete id="deleteTemporaryBylpTemporaryId" parameterType="Integer">
+        delete from lp_temporary where temporary_id = #{temporaryId}
+    </delete>
+
+    <delete id="deleteTemporaryBylpTemporaryIds" parameterType="String">
+        delete from lp_temporary where temporary_id in  <foreach item="temporaryId" collection="array" open="(" separator="," close=")"> #{temporaryId}
+        </foreach>
+    </delete>
+</mapper>

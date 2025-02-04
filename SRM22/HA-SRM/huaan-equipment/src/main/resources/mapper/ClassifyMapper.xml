@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaan.equipment.mapper.ClassifyMapper">
+
+    <resultMap type="Classify" id="ClassifyResult">
+        <result property="classifyId"    column="classify_id"    />
+        <result property="classifyName"    column="classify_name"    />
+        <result property="description"    column="description"    />
+        <result property="sort"    column="sort"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectClassifyVo">
+        select classify_id, classify_name, description, sort, remark, create_by, create_time, update_by, update_time from lp_classify
+    </sql>
+
+    <select id="selectClassifyList" parameterType="Classify" resultMap="ClassifyResult">
+        <include refid="selectClassifyVo"/>
+        <where>
+            <if test="classifyName != null  and classifyName != ''"> and classify_name like concat('%', #{classifyName}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+
+    <select id="selectClassifyByClassifyId" parameterType="Integer" resultMap="ClassifyResult">
+        <include refid="selectClassifyVo"/>
+        where classify_id = #{classifyId}
+    </select>
+
+    <insert id="insertClassify" parameterType="Classify" useGeneratedKeys="true" keyProperty="classifyId">
+        insert into lp_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classifyName != null">classify_name,</if>
+            <if test="description != null">description,</if>
+            <if test="sort != null">sort,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classifyName != null">#{classifyName},</if>
+            <if test="description != null">#{description},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateClassify" parameterType="Classify">
+        update lp_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classifyName != null">classify_name = #{classifyName},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where classify_id = #{classifyId}
+    </update>
+
+    <delete id="deleteClassifyByClassifyId" parameterType="Integer">
+        delete from lp_classify where classify_id = #{classifyId}
+    </delete>
+
+    <delete id="deleteClassifyByClassifyIds" parameterType="String">
+        delete from lp_classify where classify_id in
+        <foreach item="classifyId" collection="array" open="(" separator="," close=")">
+            #{classifyId}
+        </foreach>
+    </delete>
+</mapper>
